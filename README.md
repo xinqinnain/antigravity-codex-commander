@@ -8,6 +8,8 @@ English summary: A lightweight, zero-dependency Antigravity skill + PowerShell w
 
 ## 核心特性（为什么做这套 Skill）
 
+**做这套 Skill 的初衷很直接**：GPT / Codex 的编码与推理能力很强，但直接交互时防御性太强、表达生硬晦涩、可读性极差；这套 Skill 就是**用 Gemini（Antigravity）当「翻译官 + 指挥官」去翻译需求、指挥 GPT 干活，再把它的关键回复与结果转述回人话**。围绕这一协作模式，以下 6 项机制把双方的 Token 消耗与长任务稳定性也一并打磨到位：
+
 1. **零 Token 本地静默只传话 Watcher（`wait-codex-update.ps1`）**
    - 彻底告别定时轮询（如每 15–20 秒查一次进度）和刷屏式“实时播报”。
    - 本地脚本后台静默监听日志（**0 LLM Token 消耗**），**硬锁定 `speech-only-locked` 模式**：自动过滤 `[思考]`、`[执行命令]`、`[命令完成]`、`[修改文件]` 等过程噪声，只在 Codex 真正开口（`[Codex说]`）、报错（`[ERROR]`/`[STDERR]`）、结束（`[END]`）或连续静默 10 分钟心跳时才唤醒主控。
